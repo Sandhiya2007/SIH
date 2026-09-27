@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensor Health & Hardware Architecture | Conveyor Belt AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Rajdhani:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- SIDEBAR (Section 6) -->
+        <aside class="sidebar">
+            <div>
+                <div class="brand-section">
+                    <div class="brand-icon">📡</div>
+                    <div class="brand-text">
+                        <h1>CONVEYOR AI</h1>
+                        <p>INDUSTRIAL INTELLIGENCE</p>
+                    </div>
+                </div>
+
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="/dashboard">
+                            <span class="nav-dot"></span>
+                            <span>COMMAND CENTER</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/dashboard#live-sensors-section">
+                            <span class="nav-dot"></span>
+                            <span>LIVE MONITORING</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/control">
+                            <span class="nav-dot"></span>
+                            <span>DATA SIMULATION</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/fault-analysis">
+                            <span class="nav-dot"></span>
+                            <span>FAULT ANALYSIS</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/predictive-maintenance">
+                            <span class="nav-dot"></span>
+                            <span>PREDICTIVE MAINTENANCE</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="/sensor-health">
+                            <span class="nav-dot"></span>
+                            <span>SENSOR HEALTH</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- SYSTEM STATUS -->
+            <div class="sidebar-status-box">
+                <div class="sidebar-status-header">
+                    <span>SYSTEM</span>
+                    <span style="color: var(--status-normal);">ONLINE</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-led online"></span>
+                    <span>AI ENGINE ONLINE</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-led active" id="data-stream-led"></span>
+                    <span>DATA STREAM READY</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-led online"></span>
+                    <span>MODEL CONNECTED</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN WRAPPER -->
+        <div class="main-wrapper">
+            <!-- TOP HEADER -->
+            <header class="top-header">
+                <div class="header-left">
+                    <div class="header-title-block">
+                        <h2>CONVEYOR AI MONITORING SYSTEM</h2>
+                        <span>SENSOR HEALTH & HARDWARE ARCHITECTURE</span>
+                    </div>
+                    <div class="mode-indicator-pill">
+                        <span class="status-led active"></span>
+                        <span>● DEMO / DATASET MODE</span>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <div class="header-stat">
+                        <span class="label">Field Architecture</span>
+                        <span class="val" style="color: var(--cyan-primary);">Raspberry Pi Ready</span>
+                    </div>
+                    <div class="conn-badge">
+                        <span class="status-led online"></span>
+                        <span>WS CONNECTED</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- PAGE CONTENT -->
+            <main class="page-container">
+                <!-- ARCHITECTURE MODE BANNER (Section 33, 34) -->
+                <section class="line-status-banner">
+                    <div class="banner-left">
+                        <h3>HARDWARE INTEGRATION ARCHITECTURE (DEMO / DATASET MODE)</h3>
+                        <p>Currently running in <strong>DEMO / DATASET SIMULATION</strong> mode using <code style="color: #fff;">synthetic_motor_fault_dataset.csv</code>. The architecture is engineered for direct Raspberry Pi 4B/5 connection with MCP3208 ADC, ZMPT101B, SCT-013, ADXL345, and DS18B20 transducers.</p>
+                    </div>
+                    <div class="banner-right">
+                        <span class="badge-pill warning" style="font-size: 0.8rem; padding: 6px 14px;">DEMO / DATASET MODE</span>
+                    </div>
+                </section>
+
+                <!-- SECTION 33: SENSOR CARDS (VOLTAGE, CURRENT, VIBRATION, TEMPERATURE, ADC) -->
+                <section class="overview-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+                    <!-- 1. ZMPT101B -->
+                    <div class="metric-panel">
+                        <div class="card-header-bar">
+                            <div>
+                                <div class="card-title">
+                                    <span class="card-title-icon">⚡</span>
+                                    <span>Voltage Sensor (ZMPT101B)</span>
+                                </div>
+                                <div class="panel-sub-label">Micro-Voltage Precision Potential Transformer</div>
+                            </div>
+                            <span class="badge-pill warning">DEMO / DATASET MODE</span>
+                        </div>
+
+                        <div style="font-family: var(--font-mono); font-size: 0.8rem; margin: 16px 0; display: flex; flex-direction: column; gap: 8px;">
+                            <div class="meta-row"><span>Hardware Interface:</span> <span class="val">MCP3208 Analog CH0</span></div>
+                            <div class="meta-row"><span>Monitored Feature:</span> <span class="val">Voltage_RMS</span></div>
+                            <div class="meta-row"><span>Signal Quality:</span> <span class="val" style="color: var(--status-normal);">99.4% (Simulated)</span></div>
+                            <div class="meta-row"><span>Sampling Rate:</span> <span class="val">1,000 Hz</span></div>
+                            <div class="meta-row"><span>Last Update:</span> <span class="val">Dataset Row Stream</span></div>
+                            <div class="meta-row"><span>Status:</span> <span class="val" style="color: var(--status-warning);">DEMO MODE (SYNTHETIC)</span></div>
+                        </div>
+
+                        <div class="panel-footer-stat">
+                            <span class="k">Nominal Range</span>
+                            <span class="v">380 - 440 V AC</span>
+                        </div>
+                    </div>
+
+                    <!-- 2. SCT-013 -->
+                    <div class="metric-panel">
+                        <div class="card-header-bar">
+                            <div>
+                                <div class="card-title">
+                                    <span class="card-title-icon">🧲</span>
+                                    <span>Current Sensor (SCT-013)</span>
+                                </div>
+                                <div class="panel-sub-label">Non-Invasive Split-Core Current Transformer</div>
+                            </div>
+                            <span class="badge-pill warning">DEMO / DATASET MODE</span>
+                        </div>
+
+                        <div style="font-family: var(--font-mono); font-size: 0.8rem; margin: 16px 0; display: flex; flex-direction: column; gap: 8px;">
+                            <div class="meta-row"><span>Hardware Interface:</span> <span class="val">MCP3208 Analog CH1</span></div>
+                            <div class="meta-row"><span>Monitored Feature:</span> <span class="val">Irms, Power_Factor, I_THD</span></div>
+                            <div class="meta-row"><span>Signal Quality:</span> <span class="val" style="color: var(--status-normal);">99.1% (Simulated)</span></div>
+                            <div class="meta-row"><span>Sampling Rate:</span> <span class="val">1,000 Hz</span></div>
+                            <div class="meta-row"><span>Last Update:</span> <span class="val">Dataset Row Stream</span></div>
+                            <div class="meta-row"><span>Status:</span> <span class="val" style="color: var(--status-warning);">DEMO MODE (SYNTHETIC)</span></div>
+                        </div>
+
+                        <div class="panel-footer-stat">
+                            <span class="k">Nominal Range</span>
+                            <span class="v">10 - 30 A AC</span>
+                        </div>
+                    </div>
+
+                    <!-- 3. ADXL345 -->
+                    <div class="metric-panel">
+                        <div class="card-header-bar">
+                            <div>
+                                <div class="card-title">
+                                    <span class="card-title-icon">〽️</span>
+                                    <span>Vibration Sensor (ADXL345)</span>
+                                </div>
+                                <div class="panel-sub-label">3-Axis Digital MEMS Accelerometer</div>
+                            </div>
+                            <span class="badge-pill warning">DEMO / DATASET MODE</span>
+                        </div>
+
+                        <div style="font-family: var(--font-mono); font-size: 0.8rem; margin: 16px 0; display: flex; flex-direction: column; gap: 8px;">
+                            <div class="meta-row"><span>Hardware Interface:</span> <span class="val">I2C Bus 0x53</span></div>
+                            <div class="meta-row"><span>Monitored Feature:</span> <span class="val">Vibration_X, Y, Z, RMS_Vibration</span></div>
+                            <div class="meta-row"><span>Signal Quality:</span> <span class="val" style="color: var(--status-normal);">99.8% (Simulated)</span></div>
+                            <div class="meta-row"><span>Sampling Rate:</span> <span class="val">3,200 Hz</span></div>
+                            <div class="meta-row"><span>Last Update:</span> <span class="val">Dataset Row Stream</span></div>
+                            <div class="meta-row"><span>Status:</span> <span class="val" style="color: var(--status-warning);">DEMO MODE (SYNTHETIC)</span></div>
+                        </div>
+
+                        <div class="panel-footer-stat">
+                            <span class="k">Dynamic Range</span>
+                            <span class="v">±16g (13-bit)</span>
+                        </div>
+                    </div>
+
+                    <!-- 4. DS18B20 -->
+                    <div class="metric-panel">
+                        <div class="card-header-bar">
+                            <div>
+                                <div class="card-title">
+                                    <span class="card-title-icon">🌡️</span>
+                                    <span>Temperature Sensor (DS18B20)</span>
+                                </div>
+                                <div class="panel-sub-label">Waterproof Digital Thermal Transducer</div>
+                            </div>
+                            <span class="badge-pill warning">DEMO / DATASET MODE</span>
+                        </div>
+
+                        <div style="font-family: var(--font-mono); font-size: 0.8rem; margin: 16px 0; display: flex; flex-direction: column; gap: 8px;">
+                            <div class="meta-row"><span>Hardware Interface:</span> <span class="val">Dallas 1-Wire (GPIO 4)</span></div>
+                            <div class="meta-row"><span>Monitored Feature:</span> <span class="val">Bearing & Motor Housing Temp</span></div>
+                            <div class="meta-row"><span>Signal Quality:</span> <span class="val" style="color: var(--status-normal);">99.6% (Simulated)</span></div>
+                            <div class="meta-row"><span>Sampling Rate:</span> <span class="val">1 Hz</span></div>
+                            <div class="meta-row"><span>Last Update:</span> <span class="val">Dataset Row Stream</span></div>
+                            <div class="meta-row"><span>Status:</span> <span class="val" style="color: var(--status-warning);">DEMO MODE (SYNTHETIC)</span></div>
+                        </div>
+
+                        <div class="panel-footer-stat">
+                            <span class="k">Dynamic Range</span>
+                            <span class="v">-55°C to +125°C</span>
+                        </div>
+                    </div>
+
+                    <!-- 5. MCP3208 -->
+                    <div class="metric-panel">
+                        <div class="card-header-bar">
+                            <div>
+                                <div class="card-title">
+                                    <span class="card-title-icon">🔲</span>
+                                    <span>ADC Converter (MCP3208)</span>
+                                </div>
+                                <div class="panel-sub-label">12-Bit 8-Channel SPI Analog-to-Digital Converter</div>
+                            </div>
+                            <span class="badge-pill warning">DEMO / DATASET MODE</span>
+                        </div>
+
+                        <div style="font-family: var(--font-mono); font-size: 0.8rem; margin: 16px 0; display: flex; flex-direction: column; gap: 8px;">
+                            <div class="meta-row"><span>Hardware Interface:</span> <span class="val">SPI0 (CS0 / MISO / MOSI / SCLK)</span></div>
+                            <div class="meta-row"><span>Monitored Feature:</span> <span class="val">Multi-Channel Transducer Acquisition</span></div>
+                            <div class="meta-row"><span>Signal Quality:</span> <span class="val" style="color: var(--status-normal);">99.9% (Simulated)</span></div>
+                            <div class="meta-row"><span>Sampling Rate:</span> <span class="val">100 ksps Max</span></div>
+                            <div class="meta-row"><span>Last Update:</span> <span class="val">Dataset Row Stream</span></div>
+                            <div class="meta-row"><span>Status:</span> <span class="val" style="color: var(--status-warning);">DEMO MODE (SYNTHETIC)</span></div>
+                        </div>
+
+                        <div class="panel-footer-stat">
+                            <span class="k">Resolution</span>
+                            <span class="v">12-Bit (4096 Levels)</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 34: RASPBERRY PI INTEGRATION ARCHITECTURE -->
+                <section class="sensor-matrix-card" style="margin-top: 24px;">
+                    <div class="card-header-bar">
+                        <div>
+                            <div class="card-title">
+                                <span class="card-title-icon">🍓</span>
+                                <span>Raspberry Pi Hardware Ingestion Flow</span>
+                            </div>
+                            <div class="panel-sub-label">Physical Sensor Ingestion Pipeline (Future Deployment)</div>
+                        </div>
+                        <span class="badge-pill normal">ARCHITECTURE READY</span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-secondary);">
+                        <div>
+                            <p style="margin-bottom: 12px; line-height: 1.6;">
+                                To stream live telemetry from physical transducers wired to a Raspberry Pi into the monitoring system, send an HTTP POST request to <code style="color: var(--cyan-primary);">/api/inject</code>:
+                            </p>
+                            <pre style="background: rgba(10,15,26,0.9); padding: 14px; border: 1px solid var(--border-subtle); border-radius: 8px; color: #fff; overflow-x: auto; font-size: 0.78rem;">
+POST /api/inject HTTP/1.1
+Content-Type: application/json
+
+{
+    "Voltage_RMS": 415.2,
+    "Irms": 18.4,
+    "Power_Factor": 0.91,
+    "Phase_Angle": 24.5,
+    "I_THD": 3.2,
+    "Vibration_X": 0.12,
+    "Vibration_Y": 0.08,
+    "Vibration_Z": 9.81,
+    "RMS_Vibration": 2.84,
+    "Peak_Acceleration": 4.12,
+    "Dominant_Frequency": 49.8,
+    "Spectral_Energy": 145.2,
+    "Operating_Hours": 1250.0
+}
+                            </pre>
+                        </div>
+
+                        <div>
+                            <p style="margin-bottom: 12px; line-height: 1.6;">
+                                The backend receives telemetry, validates features in training order, executes XGBoost condition inference, and broadcasts live telemetry packets to Laptop 1 & Laptop 2 displays via WebSocket.
+                            </p>
+                            <div style="background: rgba(16,24,40,0.8); border: 1px solid var(--border-glass); border-radius: 8px; padding: 16px; margin-top: 10px;">
+                                <div style="color: var(--status-normal); font-weight: bold; margin-bottom: 8px;">Hardware Architecture Flow:</div>
+                                <div style="color: var(--text-secondary); line-height: 1.8;">
+                                    ADXL345 / DS18B20 / ZMPT101B / SCT-013 / MCP3208<br>
+                                    ↓<br>
+                                    Raspberry Pi 4B / 5<br>
+                                    ↓<br>
+                                    FastAPI (POST /api/inject)<br>
+                                    ↓<br>
+                                    Feature Validation<br>
+                                    ↓<br>
+                                    XGBoost Classifier<br>
+                                    ↓<br>
+                                    WebSocket Broadcast ➔ Monitoring Dashboard
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/websocket.js"></script>
+</body>
+</html>

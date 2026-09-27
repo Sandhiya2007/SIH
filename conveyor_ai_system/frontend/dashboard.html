@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Command Center | Conveyor Belt AI Industrial Monitoring</title>
+    <!-- Google Fonts for High-Tech Industrial SCADA -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Rajdhani:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- SIDEBAR NAVIGATION (Section 6) -->
+        <aside class="sidebar">
+            <div>
+                <div class="brand-section">
+                    <div class="brand-icon">⚡</div>
+                    <div class="brand-text">
+                        <h1>CONVEYOR AI</h1>
+                        <p>INDUSTRIAL INTELLIGENCE</p>
+                    </div>
+                </div>
+
+                <ul class="nav-menu">
+                    <li class="nav-item active">
+                        <a href="/dashboard">
+                            <span class="nav-dot"></span>
+                            <span>COMMAND CENTER</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#live-sensors-section">
+                            <span class="nav-dot"></span>
+                            <span>LIVE MONITORING</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/control">
+                            <span class="nav-dot"></span>
+                            <span>DATA SIMULATION</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/fault-analysis">
+                            <span class="nav-dot"></span>
+                            <span>FAULT ANALYSIS</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/predictive-maintenance">
+                            <span class="nav-dot"></span>
+                            <span>PREDICTIVE MAINTENANCE</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/sensor-health">
+                            <span class="nav-dot"></span>
+                            <span>SENSOR HEALTH</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- SYSTEM STATUS BOX IN SIDEBAR (Section 6) -->
+            <div class="sidebar-status-box">
+                <div class="sidebar-status-header">
+                    <span>SYSTEM</span>
+                    <span style="color: var(--status-normal);">ONLINE</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-led online"></span>
+                    <span>AI ENGINE ONLINE</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-led active" id="data-stream-led"></span>
+                    <span>DATA STREAM READY</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-led online"></span>
+                    <span>MODEL CONNECTED</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN WRAPPER -->
+        <div class="main-wrapper">
+            <!-- TOP HEADER (Section 7) -->
+            <header class="top-header">
+                <div class="header-left">
+                    <div class="header-title-block">
+                        <h2>CONVEYOR AI MONITORING SYSTEM</h2>
+                        <span>AI-POWERED CONVEYOR CONDITION MONITORING</span>
+                    </div>
+                    <!-- DEMO MODE INDICATOR PILL (Section 39) -->
+                    <div class="mode-indicator-pill" id="streamModePill">
+                        <span class="status-led active"></span>
+                        <span id="streamModeText">● DATASET SIMULATION ACTIVE</span>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <div class="header-stat">
+                        <span class="label">System State</span>
+                        <span class="val" style="color: var(--status-normal);">● SYSTEM ONLINE</span>
+                    </div>
+                    <div class="header-stat">
+                        <span class="label">Date / Time</span>
+                        <span class="val" id="serverClock">--:--:--</span>
+                    </div>
+                    <div class="header-stat">
+                        <span class="label">Model</span>
+                        <span class="val" style="color: var(--cyan-primary);">XGBOOST</span>
+                    </div>
+                    <div class="header-stat">
+                        <span class="label">Dataset</span>
+                        <span class="val" id="headerDatasetSamples" style="color: var(--cyan-primary);">2000 SAMPLES</span>
+                    </div>
+                    <div class="conn-badge" id="topConnBadge">
+                        <span class="status-led online"></span>
+                        <span>WS CONNECTED</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- PAGE CONTENT -->
+            <main class="page-container">
+                <!-- SUB-HEADER LINE BANNER (Section 8) -->
+                <section class="line-status-banner">
+                    <div class="banner-left">
+                        <h3>CONVEYOR LINE 01</h3>
+                        <p>IRON ORE MATERIAL HANDLING SYSTEM (PRIMARY ORE DISCHARGE FLIGHT)</p>
+                    </div>
+                    <div class="banner-right">
+                        <div class="system-status-tag" id="topLineStatusTag">
+                            <span class="status-led online"></span>
+                            <span>SYSTEM ONLINE</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 9: LARGE CENTRAL AI CONDITION DISPLAY -->
+                <section class="central-ai-hero-card" id="centralAiHeroCard">
+                    <div class="central-ai-left">
+                        <span class="central-ai-tag">CURRENT CONDITION</span>
+                        <h1 class="central-ai-title" id="heroConditionTitle">NORMAL LOAD</h1>
+                        <div class="central-ai-meta">
+                            <div class="central-ai-meta-item">
+                                <span>AI CONFIDENCE:</span>
+                                <strong id="heroConfidenceValue">99.8%</strong>
+                            </div>
+                            <div class="central-ai-meta-item">
+                                <span>ROW:</span>
+                                <strong id="heroRowValue">1 / 2000</strong>
+                            </div>
+                            <div class="central-ai-meta-item">
+                                <span>OPERATING HOURS:</span>
+                                <strong id="heroOpHoursValue">1,248.5 H</strong>
+                            </div>
+                            <div class="central-ai-meta-item">
+                                <span>PREDICTION MATCH:</span>
+                                <strong id="heroMatchValue" style="color: var(--status-normal);">✓ CORRECT</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="central-ai-right">
+                        <div class="status-hero-pill normal" id="heroStatusPill">
+                            <span class="status-led online" id="heroStatusLed"></span>
+                            <span id="heroStatusText">NORMAL</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 10: FOUR CONDITION STATUS DISPLAY (DYNAMIC SAMPLES & LABELS) -->
+                <section class="four-condition-grid" id="fourConditionContainer">
+                    <!-- Populated dynamically via dashboard.js from /api/dataset/info -->
+                    <div class="condition-card active" id="cond_card_normal_load">
+                        <div class="condition-card-header">
+                            <span class="label">CONDITION 01</span>
+                            <span class="status-led online"></span>
+                        </div>
+                        <div class="condition-card-name">NORMAL LOAD</div>
+                        <div class="condition-card-samples"><span id="count_normal_load">500</span> SAMPLES</div>
+                    </div>
+                    <div class="condition-card" id="cond_card_overload">
+                        <div class="condition-card-header">
+                            <span class="label">CONDITION 02</span>
+                            <span class="status-led active"></span>
+                        </div>
+                        <div class="condition-card-name">OVERLOAD</div>
+                        <div class="condition-card-samples"><span id="count_overload">500</span> SAMPLES</div>
+                    </div>
+                    <div class="condition-card" id="cond_card_misalignment">
+                        <div class="condition-card-header">
+                            <span class="label">CONDITION 03</span>
+                            <span class="status-led active"></span>
+                        </div>
+                        <div class="condition-card-name">MISALIGNMENT</div>
+                        <div class="condition-card-samples"><span id="count_misalignment">500</span> SAMPLES</div>
+                    </div>
+                    <div class="condition-card" id="cond_card_splice_rupture">
+                        <div class="condition-card-header">
+                            <span class="label">CONDITION 04</span>
+                            <span class="status-led critical"></span>
+                        </div>
+                        <div class="condition-card-name">SPLICE RUPTURE</div>
+                        <div class="condition-card-samples"><span id="count_splice_rupture">500</span> SAMPLES</div>
+                    </div>
+                </section>
+
+                <!-- SECTION 8: DIGITAL TWIN CONVEYOR VISUALIZATION -->
+                <section class="digital-twin-card">
+                    <div class="card-header-bar">
+                        <div class="card-title">
+                            <span class="card-title-icon">⚙</span>
+                            <span>Digital Twin Conveyor Visualization</span>
+                        </div>
+                        <div class="twin-controls">
+                            <span class="system-status-tag" id="twinStatusText">NORMAL - NORMAL LOAD</span>
+                        </div>
+                    </div>
+
+                    <div class="conveyor-viewport">
+                        <!-- High Precision SCADA SVG Conveyor Blueprint -->
+                        <svg class="twin-svg" viewBox="0 0 1100 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Background Steel Truss Framework -->
+                            <path d="M 120 160 L 980 160 M 120 185 L 980 185" stroke="rgba(255,255,255,0.08)" stroke-width="3"/>
+                            <path d="M 160 160 L 200 185 M 240 160 L 280 185 M 320 160 L 360 185 M 400 160 L 440 185 M 480 160 L 520 185 M 560 160 L 600 185 M 640 160 L 680 185 M 720 160 L 760 185 M 800 160 L 840 185 M 880 160 L 920 185" stroke="rgba(255,255,255,0.06)" stroke-width="2"/>
+                            
+                            <!-- Concrete Foundation Pedestals -->
+                            <rect x="40" y="185" width="220" height="35" rx="4" fill="#131b2e" stroke="rgba(0,242,254,0.2)" stroke-width="1.5"/>
+                            <rect x="880" y="185" width="180" height="35" rx="4" fill="#131b2e" stroke="rgba(0,242,254,0.2)" stroke-width="1.5"/>
+
+                            <!-- MOTOR (Drive Station) -->
+                            <g id="svg_motor_group">
+                                <rect x="50" y="70" width="95" height="105" rx="8" fill="#0d1424" stroke="#00f2fe" stroke-width="2" id="motorBox"/>
+                                <!-- Cooling Fins -->
+                                <path d="M 60 75 L 60 170 M 72 75 L 72 170 M 84 75 L 84 170 M 96 75 L 96 170 M 108 75 L 108 170 M 120 75 L 120 170 M 132 75 L 132 170" stroke="rgba(0,242,254,0.3)" stroke-width="1.5"/>
+                                <text x="97" y="125" fill="#fff" font-family="Rajdhani" font-weight="700" font-size="14" text-anchor="middle">MOTOR</text>
+                                <text x="97" y="142" fill="#00f2fe" font-family="JetBrains Mono" font-size="10" text-anchor="middle">350 kW</text>
+                                <circle cx="97" cy="98" r="16" fill="rgba(0,242,254,0.15)" stroke="#00f2fe" stroke-width="1.5"/>
+                                <line x1="97" y1="84" x2="97" y2="112" stroke="#00f2fe" stroke-width="2" class="pulley-wheel"/>
+                                <line x1="83" y1="98" x2="111" y2="98" stroke="#00f2fe" stroke-width="2" class="pulley-wheel"/>
+                            </g>
+
+                            <!-- SHAFT & COUPLING -->
+                            <rect x="145" y="112" width="22" height="20" fill="#38bdf8" stroke="#00f2fe" stroke-width="1"/>
+
+                            <!-- GEARBOX -->
+                            <g id="svg_gearbox_group">
+                                <polygon points="167,80 235,90 235,165 167,165" fill="#0e172a" stroke="#00f2fe" stroke-width="2" id="gearboxBox"/>
+                                <text x="201" y="125" fill="#fff" font-family="Rajdhani" font-weight="700" font-size="13" text-anchor="middle">GEARBOX</text>
+                                <text x="201" y="142" fill="#818cf8" font-family="JetBrains Mono" font-size="10" text-anchor="middle">i = 28.4</text>
+                            </g>
+
+                            <!-- DRIVE SHAFT TO PULLEY -->
+                            <rect x="235" y="116" width="30" height="14" fill="#38bdf8"/>
+
+                            <!-- DRIVE PULLEY (Head Pulley) -->
+                            <g transform="translate(305, 122)">
+                                <circle cx="0" cy="0" r="48" fill="#111c33" stroke="#00f2fe" stroke-width="3" id="drivePulleyOuter"/>
+                                <circle cx="0" cy="0" r="48" fill="none" stroke="rgba(0,242,254,0.4)" stroke-width="6" stroke-dasharray="14 10" class="pulley-wheel"/>
+                                <circle cx="0" cy="0" r="14" fill="#00f2fe"/>
+                                <text x="0" y="4" fill="#0a0e17" font-family="JetBrains Mono" font-weight="700" font-size="9" text-anchor="middle">DRIVE</text>
+                            </g>
+
+                            <!-- IDLER ROLLERS -->
+                            <g opacity="0.8">
+                                <circle cx="430" cy="80" r="10" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5" class="pulley-wheel"/>
+                                <circle cx="530" cy="80" r="10" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5" class="pulley-wheel"/>
+                                <circle cx="630" cy="80" r="10" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5" class="pulley-wheel"/>
+                                <circle cx="730" cy="80" r="10" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5" class="pulley-wheel"/>
+                                <circle cx="830" cy="80" r="10" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5" class="pulley-wheel"/>
+
+                                <!-- Return Idlers -->
+                                <circle cx="480" cy="165" r="9" fill="#1e293b" stroke="#64748b" stroke-width="1.5" class="pulley-wheel reverse"/>
+                                <circle cx="680" cy="165" r="9" fill="#1e293b" stroke="#64748b" stroke-width="1.5" class="pulley-wheel reverse"/>
+                            </g>
+
+                            <!-- TAIL PULLEY -->
+                            <g transform="translate(950, 122)">
+                                <circle cx="0" cy="0" r="48" fill="#111c33" stroke="#00f2fe" stroke-width="3" id="tailPulleyOuter"/>
+                                <circle cx="0" cy="0" r="48" fill="none" stroke="rgba(0,242,254,0.4)" stroke-width="6" stroke-dasharray="14 10" class="pulley-wheel"/>
+                                <circle cx="0" cy="0" r="14" fill="#00f2fe"/>
+                                <text x="0" y="4" fill="#0a0e17" font-family="JetBrains Mono" font-weight="700" font-size="9" text-anchor="middle">TAIL</text>
+                            </g>
+
+                            <!-- CONVEYOR BELT (Top carry & Bottom return) -->
+                            <path d="M 305 74 L 950 74" stroke="#00f2fe" stroke-width="7" stroke-linecap="round" id="topBeltPath"/>
+                            <path d="M 305 74 L 950 74" stroke="#ffffff" stroke-width="3" class="belt-dash" id="topBeltDash"/>
+                            <path d="M 950 170 L 305 170" stroke="#00f2fe" stroke-width="7" stroke-linecap="round" id="bottomBeltPath"/>
+                            <path d="M 950 170 L 305 170" stroke="#ffffff" stroke-width="3" class="belt-dash" id="bottomBeltDash"/>
+
+                            <!-- Iron Ore Material Lumps on Belt -->
+                            <g id="oreLumps">
+                                <circle cx="360" cy="67" r="4" fill="#b45309"/>
+                                <circle cx="410" cy="66" r="5" fill="#9a3412"/>
+                                <circle cx="470" cy="67" r="4" fill="#b45309"/>
+                                <circle cx="560" cy="66" r="6" fill="#c2410c"/>
+                                <circle cx="670" cy="67" r="5" fill="#9a3412"/>
+                                <circle cx="780" cy="66" r="4" fill="#b45309"/>
+                                <circle cx="890" cy="67" r="5" fill="#c2410c"/>
+                            </g>
+
+                            <!-- FLOW LABELS -->
+                            <text x="630" y="55" fill="rgba(255,255,255,0.4)" font-family="JetBrains Mono" font-size="11" letter-spacing="2">CONVEYOR FLIGHT ➔ MATERIAL FLOW (IRON ORE)</text>
+
+                            <!-- SENSOR NODES AROUND SYSTEM (Section 8) -->
+                            <!-- 1. Voltage -->
+                            <g transform="translate(65, 30)">
+                                <circle cx="0" cy="0" r="12" fill="#00f2fe" fill-opacity="0.2" stroke="#00f2fe" stroke-width="1.5"/>
+                                <text x="0" y="4" fill="#00f2fe" font-family="JetBrains Mono" font-weight="700" font-size="11" text-anchor="middle">V</text>
+                                <line x1="0" y1="12" x2="15" y2="40" stroke="#00f2fe" stroke-dasharray="2 2"/>
+                            </g>
+                            <!-- 2. Current -->
+                            <g transform="translate(105, 30)">
+                                <circle cx="0" cy="0" r="12" fill="#818cf8" fill-opacity="0.2" stroke="#818cf8" stroke-width="1.5"/>
+                                <text x="0" y="4" fill="#818cf8" font-family="JetBrains Mono" font-weight="700" font-size="11" text-anchor="middle">A</text>
+                                <line x1="0" y1="12" x2="0" y2="40" stroke="#818cf8" stroke-dasharray="2 2"/>
+                            </g>
+                            <!-- 3. Temperature -->
+                            <g transform="translate(205, 45)">
+                                <circle cx="0" cy="0" r="12" fill="#fbbf24" fill-opacity="0.2" stroke="#fbbf24" stroke-width="1.5"/>
+                                <text x="0" y="4" fill="#fbbf24" font-family="JetBrains Mono" font-weight="700" font-size="11" text-anchor="middle">℃</text>
+                                <line x1="0" y1="12" x2="0" y2="35" stroke="#fbbf24" stroke-dasharray="2 2"/>
+                            </g>
+                            <!-- 4. Vibration -->
+                            <g transform="translate(305, 30)">
+                                <circle cx="0" cy="0" r="12" fill="#00ff9d" fill-opacity="0.2" stroke="#00ff9d" stroke-width="1.5"/>
+                                <text x="0" y="4" fill="#00ff9d" font-family="JetBrains Mono" font-weight="700" font-size="11" text-anchor="middle">〽</text>
+                                <line x1="0" y1="12" x2="0" y2="42" stroke="#00ff9d" stroke-dasharray="2 2"/>
+                            </g>
+                        </svg>
+
+                        <!-- HUD Floating Sensor Nodes Below Conveyor -->
+                        <div class="hud-sensors">
+                            <div class="hud-sensor-node">
+                                <div class="node-left">
+                                    <div class="node-glyph v">V</div>
+                                    <div class="node-meta">
+                                        <h5>Supply Voltage</h5>
+                                        <p id="hudVoltage">415.2 V</p>
+                                    </div>
+                                </div>
+                                <div class="node-status-dot status-led online"></div>
+                            </div>
+
+                            <div class="hud-sensor-node">
+                                <div class="node-left">
+                                    <div class="node-glyph a">A</div>
+                                    <div class="node-meta">
+                                        <h5>Motor Current</h5>
+                                        <p id="hudCurrent">18.42 A</p>
+                                    </div>
+                                </div>
+                                <div class="node-status-dot status-led online"></div>
+                            </div>
+
+                            <div class="hud-sensor-node">
+                                <div class="node-left">
+                                    <div class="node-glyph t">℃</div>
+                                    <div class="node-meta">
+                                        <h5>Bearing Temp</h5>
+                                        <p id="hudTemp">67.4 °C</p>
+                                    </div>
+                                </div>
+                                <div class="node-status-dot status-led online"></div>
+                            </div>
+
+                            <div class="hud-sensor-node">
+                                <div class="node-left">
+                                    <div class="node-glyph vib">〽</div>
+                                    <div class="node-meta">
+                                        <h5>RMS Vibration</h5>
+                                        <p id="hudVibration">2.84 mm/s</p>
+                                    </div>
+                                </div>
+                                <div class="node-status-dot status-led online"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 11, 12, 16: MACHINE HEALTH, RUL, AI PROBABILITY DISTRIBUTION -->
+                <section class="overview-grid">
+                    <!-- SECTION 11: MACHINE HEALTH (AI CONDITION GAUGE) -->
+                    <div class="metric-panel">
+                        <div>
+                            <div class="card-title">
+                                <span class="card-title-icon">🩺</span>
+                                <span>AI Condition Status</span>
+                            </div>
+                            <div class="panel-sub-label">Circular AI Classification Gauge</div>
+                        </div>
+
+                        <div class="circular-gauge-wrap">
+                            <div class="gauge-svg-container">
+                                <svg class="gauge-svg" viewBox="0 0 170 170">
+                                    <circle class="gauge-bg-ring" cx="85" cy="85" r="75"/>
+                                    <circle class="gauge-bar-ring" id="healthGaugeCircle" cx="85" cy="85" r="75"/>
+                                </svg>
+                                <div class="gauge-center-content">
+                                    <div class="gauge-value-number" id="healthGaugeValue">99.8%</div>
+                                    <div class="gauge-value-unit">Confidence Index</div>
+                                    <div class="gauge-meta-status" id="healthGaugeStatus">NORMAL</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel-footer-stat">
+                            <div class="p-stat-item">
+                                <span class="k">AI Condition</span>
+                                <span class="v" id="aiConditionName" style="color: var(--status-normal);">NORMAL LOAD</span>
+                            </div>
+                            <div class="p-stat-item" style="align-items: flex-end;">
+                                <span class="k">Confidence</span>
+                                <span class="v" id="aiConditionConfidence">99.8%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 12: REMAINING USEFUL LIFE (RUL) -->
+                    <div class="metric-panel">
+                        <div>
+                            <div class="card-title">
+                                <span class="card-title-icon">⏳</span>
+                                <span>Remaining Useful Life</span>
+                            </div>
+                            <div class="rul-badge-tag">SIMULATED RUL – DEMONSTRATION ONLY</div>
+                        </div>
+
+                        <div class="circular-gauge-wrap">
+                            <div class="gauge-svg-container">
+                                <svg class="gauge-svg" viewBox="0 0 170 170">
+                                    <circle class="gauge-bg-ring" cx="85" cy="85" r="75"/>
+                                    <circle class="gauge-bar-ring" id="rulGaugeCircle" cx="85" cy="85" r="75" style="stroke: var(--cyan-primary); stroke-dashoffset: 80;"/>
+                                </svg>
+                                <div class="gauge-center-content">
+                                    <div class="rul-hours-hero" id="rulHoursValue">184 HOURS</div>
+                                    <div class="rul-sub-formatted" id="rulFormattedValue">7 DAYS 16 HOURS</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel-footer-stat">
+                            <div class="p-stat-item">
+                                <span class="k">Degradation</span>
+                                <span class="v" id="rulDegradationStatus" style="color: var(--status-normal);">LOW</span>
+                            </div>
+                            <div class="p-stat-item" style="align-items: flex-end;">
+                                <span class="k">Maintenance</span>
+                                <span class="v" id="rulMaintenanceAction" style="color: var(--cyan-primary);">MONITOR</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 16: AI PREDICTION PROBABILITY DISTRIBUTION -->
+                    <div class="metric-panel ai-class-card">
+                        <div>
+                            <div class="card-title">
+                                <span class="card-title-icon">🎯</span>
+                                <span>AI Prediction Probability</span>
+                            </div>
+                            <div class="panel-sub-label">Softmax Probability Distribution from model.predict_proba()</div>
+                        </div>
+
+                        <div class="current-condition-banner">
+                            <div class="cond-title-box">
+                                <h4>CURRENT AI CLASSIFICATION</h4>
+                                <h2 id="aiConditionBannerTitle">NORMAL LOAD</h2>
+                                <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);" id="aiConditionBannerConfidence">CONFIDENCE: 99.8%</span>
+                            </div>
+                            <span class="badge-pill normal" id="aiConditionClassificationTag">NORMAL</span>
+                        </div>
+
+                        <!-- Horizontal Probability Bars (Section 16) -->
+                        <div class="prob-bars-list" id="probBarsContainer">
+                            <!-- Populated dynamically via dashboard.js -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 15: INTERACTIVE LIVE TREND CHART -->
+                <section class="chart-section-card">
+                    <div class="chart-header">
+                        <div>
+                            <div class="card-title">
+                                <span class="card-title-icon">📈</span>
+                                <span>Live Sensor Trend Graph</span>
+                            </div>
+                            <div class="panel-sub-label">Interactive Multi-Channel Telemetry (Time / Row vs Value)</div>
+                        </div>
+
+                        <!-- Dropdown Selector (Section 15) -->
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <label for="chartChannelSelect" style="font-size: 0.76rem; font-family: var(--font-mono); color: var(--text-secondary);">SELECT SENSOR:</label>
+                            <select id="chartChannelSelect" class="chart-select-dropdown">
+                                <option value="voltage">Voltage (Voltage_RMS)</option>
+                                <option value="current">Current (Irms)</option>
+                                <option value="powerFactor">Power Factor</option>
+                                <option value="vibration" selected>Vibration (RMS_Vibration)</option>
+                                <option value="peakAcc">Peak Acceleration</option>
+                                <option value="domFreq">Dominant Frequency</option>
+                                <option value="spectralEnergy">Spectral Energy</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="chart-container-box">
+                        <canvas id="liveTrendCanvas"></canvas>
+                    </div>
+                </section>
+
+                <!-- SECTION 13 & 14: LIVE SENSOR PANEL & SENSOR CARDS -->
+                <section class="sensor-matrix-card" id="live-sensors-section">
+                    <div class="card-header-bar">
+                        <div>
+                            <div class="card-title">
+                                <span class="card-title-icon">📡</span>
+                                <span>Live Sensor Telemetry Matrix</span>
+                            </div>
+                            <div class="panel-sub-label">Dataset Stream Channels (Value, Unit, Status, Sparkline Trend)</div>
+                        </div>
+                    </div>
+
+                    <div class="sensor-grid">
+                        <!-- 1. Voltage RMS -->
+                        <div class="sensor-tile" id="sensor_Voltage_RMS">
+                            <div class="tile-top">
+                                <span class="tile-name">Voltage RMS</span>
+                                <span class="tile-status status-led online"></span>
+                            </div>
+                            <div class="tile-value-wrap">
+                                <span class="tile-value">415.2</span>
+                                <span class="tile-unit">V</span>
+                            </div>
+                            <canvas class="tile-sparkline" width="180" height="24"></canvas>
+                        </div>
+
+                        <!-- 2. Current RMS -->
+                        <div class="sensor-tile" id="sensor_Irms">
+                            <div class="tile-top">
+                                <span class="tile-name">Current RMS (Irms)</span>
+                                <span class="tile-status status-led online"></span>
+                            </div>
+                            <div class="tile-value-wrap">
+                                <span class="tile-value">18.4</span>
+                                <span class="tile-unit">A</span>
+                            </div>
+                            <canvas class="tile-sparkline" width="180" height="24"></canvas>
+                        </div>
+
+                        <!-- 3. Power Factor -->
+                        <div class="sensor-tile" id="sensor_Power_Factor">
+                            <div class="tile-top">
+                                <span class="tile-name">Power Factor</span>
+                                <span class="tile-status status-led online"></span>
+                            </div>
+                            <div class="tile-value-wrap">
+                                <span class="tile-value">0.910</span>
+                                <span class="tile-unit">PF</span>
+                            </div>
+                            <canvas class="tile-sparkline" width="180" height="24"></canvas>
+                        </div>
+
+                        <!-- 4. Phase Angle -->
+                        <div class="sensor-tile" id="sensor_Phase_Angle">
+                            <div class="tile-top">
+                                <span class="tile-name">Phase Angle</span>
+                                <span class="tile-status status-led online"></span>
+                            </div>
+                            <div class="tile-value-wrap">
+                                <span class="tile-value">24.5</span>
+                                <span class="tile-unit">°</span>
+                            </div>
+                            <canvas class="tile-sparkline" width="180" height="24"></canvas>
+                        </div>
+
+                        <!-- 5. I_THD -->
+                        <div class="sensor-tile" id="sensor_I_THD">
+                            <div class="tile-top">
+                                <span class="tile-name">Current THD (I_THD)</span>
+                                <span class="tile-status status-led online"></span>
+                            </div>
+                            <div class="tile-value-wrap">
+                                <span class="tile-value">3.20</span>
+                                <span class="tile-unit">%</span>
+                            </div>
+                            <canvas class="tile-sparkline" width="180" height="24"></canvas>
+                        </div>
+
+                        <!-- 6. RMS Vibration -->
+                        <div class="sensor-tile" id="sensor_RMS_Vibration">
+                            <div class="tile-top">
+                                <span class="tile-name">RMS Vibration</span>
+                                <span class="tile-status status-led online"></span>
+                            </div>
+                            <div class="tile-value-wrap">
+                                <span class="tile-value">2.84</span>
+                                <span class="tile-unit">mm/s</span>
+                            </div>
+                            <canvas class="tile-sparkline" width="180" height="24"></canvas>
+                        </div>
+
+                        <!-- 7. Peak Acceleration -->
+                        <div class="sensor-tile" id="sensor_Peak_Acceleration">
+                            <div class="tile-top">
+                                <span class="tile-name">Peak Acceleration</span>
+                                <span class="tile-status status-led online"></span>
+                            </div>
+                            <div class="tile-value-wrap">
+                                <span class="tile-value">4.12</span>
+                                <span class="tile-unit">g</span>
+                            </div>
+                            <canvas class="tile-sparkline" width="180" height="24"></canvas>
+                        </div>
+
+                        <!-- 8. Dominant Frequency -->
+                        <div class="sensor-tile" id="sensor_Dominant_Frequency">
+                            <div class="tile-top">
+                                <span class="tile-name">Dominant Frequency</span>
+                                <span class="tile-status status-led online"></span>
+                            </div>
+                            <div class="tile-value-wrap">
+                                <span class="tile-value">49.8</span>
+                                <span class="tile-unit">Hz</span>
+                            </div>
+                            <canvas class="tile-sparkline" width="180" height="24"></canvas>
+                        </div>
+
+                        <!-- 9. Spectral Energy -->
+                        <div class="sensor-tile" id="sensor_Spectral_Energy">
+                            <div class="tile-top">
+                                <span class="tile-name">Spectral Energy</span>
+                                <span class="tile-status status-led online"></span>
+                            </div>
+                            <div class="tile-value-wrap">
+                                <span class="tile-value">145.2</span>
+                                <span class="tile-unit">J</span>
+                            </div>
+                            <canvas class="tile-sparkline" width="180" height="24"></canvas>
+                        </div>
+
+                        <!-- 10. Operating Hours -->
+                        <div class="sensor-tile" id="sensor_Operating_Hours">
+                            <div class="tile-top">
+                                <span class="tile-name">Operating Hours</span>
+                                <span class="tile-status status-led online"></span>
+                            </div>
+                            <div class="tile-value-wrap">
+                                <span class="tile-value">1248.5</span>
+                                <span class="tile-unit">H</span>
+                            </div>
+                            <canvas class="tile-sparkline" width="180" height="24"></canvas>
+                        </div>
+
+                        <!-- 11. Vibration X -->
+                        <div class="sensor-tile" id="sensor_Vibration_X">
+                            <div class="tile-top">
+                                <span class="tile-name">Vibration X</span>
+                                <span class="tile-status status-led online"></span>
+                            </div>
+                            <div class="tile-value-wrap">
+                                <span class="tile-value">0.124</span>
+                                <span class="tile-unit">g</span>
+                            </div>
+                            <canvas class="tile-sparkline" width="180" height="24"></canvas>
+                        </div>
+
+                        <!-- 12. Vibration Y -->
+                        <div class="sensor-tile" id="sensor_Vibration_Y">
+                            <div class="tile-top">
+                                <span class="tile-name">Vibration Y</span>
+                                <span class="tile-status status-led online"></span>
+                            </div>
+                            <div class="tile-value-wrap">
+                                <span class="tile-value">0.082</span>
+                                <span class="tile-unit">g</span>
+                            </div>
+                            <canvas class="tile-sparkline" width="180" height="24"></canvas>
+                        </div>
+
+                        <!-- 13. Vibration Z -->
+                        <div class="sensor-tile" id="sensor_Vibration_Z">
+                            <div class="tile-top">
+                                <span class="tile-name">Vibration Z</span>
+                                <span class="tile-status status-led online"></span>
+                            </div>
+                            <div class="tile-value-wrap">
+                                <span class="tile-value">9.810</span>
+                                <span class="tile-unit">g</span>
+                            </div>
+                            <canvas class="tile-sparkline" width="180" height="24"></canvas>
+                        </div>
+
+                        <!-- 14. Kurtosis -->
+                        <div class="sensor-tile" id="sensor_Kurtosis">
+                            <div class="tile-top">
+                                <span class="tile-name">Kurtosis</span>
+                                <span class="tile-status status-led online"></span>
+                            </div>
+                            <div class="tile-value-wrap">
+                                <span class="tile-value">3.12</span>
+                                <span class="tile-unit">stat</span>
+                            </div>
+                            <canvas class="tile-sparkline" width="180" height="24"></canvas>
+                        </div>
+
+                        <!-- 15. Skewness -->
+                        <div class="sensor-tile" id="sensor_Skewness">
+                            <div class="tile-top">
+                                <span class="tile-name">Skewness</span>
+                                <span class="tile-status status-led online"></span>
+                            </div>
+                            <div class="tile-value-wrap">
+                                <span class="tile-value">0.145</span>
+                                <span class="tile-unit">stat</span>
+                            </div>
+                            <canvas class="tile-sparkline" width="180" height="24"></canvas>
+                        </div>
+
+                        <!-- 16. Variance -->
+                        <div class="sensor-tile" id="sensor_Variance">
+                            <div class="tile-top">
+                                <span class="tile-name">Variance</span>
+                                <span class="tile-status status-led online"></span>
+                            </div>
+                            <div class="tile-value-wrap">
+                                <span class="tile-value">0.852</span>
+                                <span class="tile-unit">σ²</span>
+                            </div>
+                            <canvas class="tile-sparkline" width="180" height="24"></canvas>
+                        </div>
+
+                        <!-- 17. Peak to Peak -->
+                        <div class="sensor-tile" id="sensor_Peak_to_Peak">
+                            <div class="tile-top">
+                                <span class="tile-name">Peak to Peak</span>
+                                <span class="tile-status status-led online"></span>
+                            </div>
+                            <div class="tile-value-wrap">
+                                <span class="tile-value">8.24</span>
+                                <span class="tile-unit">mm</span>
+                            </div>
+                            <canvas class="tile-sparkline" width="180" height="24"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 35 & 36: VISION AI PLACEHOLDER & COMBINED ARCHITECTURE -->
+                <section class="vision-ai-card">
+                    <div class="vision-ai-header">
+                        <div>
+                            <div class="card-title">
+                                <span class="card-title-icon">📷</span>
+                                <span>VISION AI ARCHITECTURE (FUTURE INTEGRATION)</span>
+                            </div>
+                            <div class="panel-sub-label">Camera-Based Conveyor Belt Rip & Surface Tear Vision AI Pipeline</div>
+                        </div>
+                        <span class="badge-pill normal" style="letter-spacing: 1px;">STATUS: READY FOR INTEGRATION</span>
+                    </div>
+
+                    <div class="vision-ai-flow">
+                        <div class="vision-flow-step">
+                            <div class="vision-step-icon">🎥</div>
+                            <div class="vision-step-title">CAMERA</div>
+                            <div class="vision-step-sub">Optical Line Scan</div>
+                        </div>
+                        <div class="vision-flow-arrow">➔</div>
+                        <div class="vision-flow-step">
+                            <div class="vision-step-icon">🖼️</div>
+                            <div class="vision-step-title">FRAME CAPTURE</div>
+                            <div class="vision-step-sub">High-Speed Video</div>
+                        </div>
+                        <div class="vision-flow-arrow">➔</div>
+                        <div class="vision-flow-step">
+                            <div class="vision-step-icon">🧠</div>
+                            <div class="vision-step-title">YOLO DETECTOR</div>
+                            <div class="vision-step-sub">Belt Damage CNN</div>
+                        </div>
+                        <div class="vision-flow-arrow">➔</div>
+                        <div class="vision-flow-step">
+                            <div class="vision-step-icon">🔍</div>
+                            <div class="vision-step-title">DAMAGE DETECTION</div>
+                            <div class="vision-step-sub">Splice Rupture / Tear</div>
+                        </div>
+                        <div class="vision-flow-arrow">➔</div>
+                        <div class="vision-flow-step">
+                            <div class="vision-step-icon">⚡</div>
+                            <div class="vision-step-title">COMBINED AI</div>
+                            <div class="vision-step-sub">XGBoost + YOLO Fusion</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 37 & 38: ALERT NOTIFICATIONS FEED -->
+                <section class="metric-panel" style="margin-top: 22px;">
+                    <div class="card-header-bar">
+                        <div class="card-title">
+                            <span class="card-title-icon">🚨</span>
+                            <span>Real-Time Condition Alert Timeline</span>
+                        </div>
+                        <span class="badge-pill normal">EVENT FEED</span>
+                    </div>
+                    <div class="alert-feed-box" id="alertFeedContainer">
+                        <div class="alert-event-item">
+                            <div>
+                                <strong>SYSTEM INITIALIZATION</strong>
+                                <div style="font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px;">
+                                    XGBoost model connected. Synthetic dataset loaded (2000 samples, 4 conditions).
+                                </div>
+                            </div>
+                            <span class="badge-pill normal">ONLINE</span>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/websocket.js"></script>
+    <script src="/js/charts.js"></script>
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>

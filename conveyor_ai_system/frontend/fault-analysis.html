@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fault Analysis & Condition Diagnostics | Conveyor Belt AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Rajdhani:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- SIDEBAR (Section 6) -->
+        <aside class="sidebar">
+            <div>
+                <div class="brand-section">
+                    <div class="brand-icon">🔬</div>
+                    <div class="brand-text">
+                        <h1>CONVEYOR AI</h1>
+                        <p>INDUSTRIAL INTELLIGENCE</p>
+                    </div>
+                </div>
+
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="/dashboard">
+                            <span class="nav-dot"></span>
+                            <span>COMMAND CENTER</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/dashboard#live-sensors-section">
+                            <span class="nav-dot"></span>
+                            <span>LIVE MONITORING</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/control">
+                            <span class="nav-dot"></span>
+                            <span>DATA SIMULATION</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="/fault-analysis">
+                            <span class="nav-dot"></span>
+                            <span>FAULT ANALYSIS</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/predictive-maintenance">
+                            <span class="nav-dot"></span>
+                            <span>PREDICTIVE MAINTENANCE</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/sensor-health">
+                            <span class="nav-dot"></span>
+                            <span>SENSOR HEALTH</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- SYSTEM STATUS -->
+            <div class="sidebar-status-box">
+                <div class="sidebar-status-header">
+                    <span>SYSTEM</span>
+                    <span style="color: var(--status-normal);">ONLINE</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-led online"></span>
+                    <span>AI ENGINE ONLINE</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-led active" id="data-stream-led"></span>
+                    <span>DATA STREAM READY</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-led online"></span>
+                    <span>MODEL CONNECTED</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN WRAPPER -->
+        <div class="main-wrapper">
+            <!-- TOP HEADER (Section 7) -->
+            <header class="top-header">
+                <div class="header-left">
+                    <div class="header-title-block">
+                        <h2>CONVEYOR AI MONITORING SYSTEM</h2>
+                        <span>FAULT ANALYSIS & CONDITION DIAGNOSTICS</span>
+                    </div>
+                    <div class="mode-indicator-pill">
+                        <span class="status-led active"></span>
+                        <span>● DATASET SIMULATION ACTIVE</span>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <div class="header-stat">
+                        <span class="label">Total Samples</span>
+                        <span class="val" id="topTotalSamples" style="color: var(--cyan-primary);">2000 SAMPLES</span>
+                    </div>
+                    <div class="header-stat">
+                        <span class="label">Running Accuracy</span>
+                        <span class="val" id="topAccDisplay" style="color: var(--status-normal);">100.0%</span>
+                    </div>
+                    <div class="conn-badge">
+                        <span class="status-led online"></span>
+                        <span>WS CONNECTED</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- PAGE CONTENT -->
+            <main class="page-container">
+                <!-- STATS STRIP (Section 29) -->
+                <section class="stats-summary-strip">
+                    <div class="stat-strip-box">
+                        <div class="k">TOTAL SAMPLES</div>
+                        <div class="v" id="statTotalSamples">2,000</div>
+                    </div>
+                    <div class="stat-strip-box">
+                        <div class="k">PROCESSED</div>
+                        <div class="v" id="statTotalProcessed">0</div>
+                    </div>
+                    <div class="stat-strip-box">
+                        <div class="k">CORRECT</div>
+                        <div class="v" id="statCorrect" style="color: var(--status-normal);">0</div>
+                    </div>
+                    <div class="stat-strip-box">
+                        <div class="k">INCORRECT</div>
+                        <div class="v" id="statIncorrect" style="color: var(--status-critical);">0</div>
+                    </div>
+                    <div class="stat-strip-box">
+                        <div class="k">RUNNING ACCURACY</div>
+                        <div class="v" id="statAccuracy" style="color: var(--cyan-primary);">100.0%</div>
+                    </div>
+                </section>
+
+                <!-- CONDITION DISTRIBUTION BAR CHART (Section 29, 30) -->
+                <section class="chart-section-card">
+                    <div class="chart-header">
+                        <div>
+                            <div class="card-title">
+                                <span class="card-title-icon">📊</span>
+                                <span>CONDITION DISTRIBUTION</span>
+                            </div>
+                            <div class="panel-sub-label" id="condDistSubtitle">Dynamic Dataset Distribution (Normal Load • Overload • Misalignment • Splice Rupture)</div>
+                        </div>
+                    </div>
+                    <div class="chart-container-box">
+                        <canvas id="faultDistCanvas"></canvas>
+                    </div>
+                </section>
+
+                <!-- PREDICTION HISTORY TABLE (Section 29) -->
+                <section class="sensor-matrix-card">
+                    <div class="card-header-bar">
+                        <div class="card-title">
+                            <span class="card-title-icon">📋</span>
+                            <span>PREDICTION HISTORY</span>
+                        </div>
+                        <span class="badge-pill normal">VERIFIED REPLAY</span>
+                    </div>
+
+                    <div class="industrial-table-wrap">
+                        <table class="industrial-table">
+                            <thead>
+                                <tr>
+                                    <th>Row</th>
+                                    <th>Operating Hours</th>
+                                    <th>Actual Condition</th>
+                                    <th>Predicted Condition</th>
+                                    <th>Confidence</th>
+                                    <th>Result</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody">
+                                <!-- Populated dynamically by script -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/websocket.js"></script>
+    <script src="/js/charts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            let detectedClasses = [];
+            let datasetCounts = {};
+
+            // 1. Fetch dataset info for dynamic condition distribution
+            try {
+                const res = await fetch('/api/dataset/info');
+                const data = await res.json();
+                if (data && data.loaded) {
+                    detectedClasses = data.detected_classes || ['normal load', 'overload', 'misalignment', 'splice rupture'];
+                    datasetCounts = data.class_counts || {};
+
+                    const sub = document.getElementById('condDistSubtitle');
+                    if (sub) {
+                        sub.textContent = `Dynamic Dataset Distribution (${detectedClasses.map(c => c.toUpperCase()).join(' • ')})`;
+                    }
+
+                    const topSamples = document.getElementById('topTotalSamples');
+                    const statSamples = document.getElementById('statTotalSamples');
+                    if (topSamples) topSamples.textContent = `${data.total_rows} SAMPLES`;
+                    if (statSamples) statSamples.textContent = data.total_rows.toLocaleString();
+
+                    // Initialize Condition Distribution Chart
+                    if (window.conveyorCharts) {
+                        window.conveyorCharts.initFaultDistributionChart('faultDistCanvas', detectedClasses, datasetCounts);
+                    }
+                }
+            } catch (e) {
+                console.warn('[FaultAnalysis] Failed to fetch dataset info:', e);
+            }
+
+            // 2. Fetch fault summary on load
+            async function fetchSummary() {
+                try {
+                    const res = await fetch('/api/fault-summary');
+                    const data = await res.json();
+                    if (data) {
+                        updateStats(data);
+                        if (data.recent_history) {
+                            renderHistory(data.recent_history);
+                        }
+                    }
+                } catch (e) {
+                    console.warn('[FaultAnalysis] Failed to fetch fault summary:', e);
+                }
+            }
+
+            function updateStats(data) {
+                const totEl = document.getElementById('statTotalProcessed');
+                const corrEl = document.getElementById('statCorrect');
+                const incEl = document.getElementById('statIncorrect');
+                const accEl = document.getElementById('statAccuracy');
+                const topAcc = document.getElementById('topAccDisplay');
+
+                if (totEl) totEl.textContent = (data.total_processed || 0).toLocaleString();
+                if (corrEl) corrEl.textContent = (data.correct_predictions || 0).toLocaleString();
+                if (incEl) incEl.textContent = (data.incorrect_predictions || 0).toLocaleString();
+                if (accEl) accEl.textContent = `${data.running_accuracy || 100.0}%`;
+                if (topAcc) topAcc.textContent = `${data.running_accuracy || 100.0}%`;
+            }
+
+            function renderHistory(history) {
+                const tbody = document.getElementById('historyTableBody');
+                if (!tbody) return;
+                tbody.innerHTML = '';
+
+                history.forEach(item => {
+                    const row = document.createElement('tr');
+                    const isMatch = item.correct === true || item.is_correct === true;
+                    const badge = isMatch
+                        ? '<span class="badge-pill normal" style="font-size:0.75rem; padding: 3px 10px;">✓ CORRECT</span>'
+                        : '<span class="badge-pill critical" style="font-size:0.75rem; padding: 3px 10px;">✗ INCORRECT</span>';
+
+                    const actual = (item.actual_display || item.actual || 'NORMAL LOAD').toUpperCase();
+                    const pred = (item.predicted_display || item.predicted || 'NORMAL LOAD').toUpperCase();
+
+                    row.innerHTML = `
+                        <td style="font-family: var(--font-mono); font-weight: 700; color: var(--cyan-primary);">${item.row}</td>
+                        <td style="font-family: var(--font-mono);">${(item.operating_hours || 1248.5).toLocaleString()} H</td>
+                        <td style="font-weight: 600; color: #38bdf8;">${actual}</td>
+                        <td style="font-weight: 600;">${pred}</td>
+                        <td style="font-family: var(--font-mono);">${item.confidence}%</td>
+                        <td>${badge}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+
+            await fetchSummary();
+
+            // 3. Listen to real-time WebSocket for continuous streaming updates
+            if (window.conveyorWS) {
+                window.conveyorWS.onTelemetry((packet) => {
+                    if (!packet || packet.type === 'CONNECTION_ESTABLISHED') return;
+                    fetchSummary();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictive Maintenance & RUL | Conveyor Belt AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Rajdhani:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- SIDEBAR (Section 6) -->
+        <aside class="sidebar">
+            <div>
+                <div class="brand-section">
+                    <div class="brand-icon">🛠️</div>
+                    <div class="brand-text">
+                        <h1>CONVEYOR AI</h1>
+                        <p>INDUSTRIAL INTELLIGENCE</p>
+                    </div>
+                </div>
+
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="/dashboard">
+                            <span class="nav-dot"></span>
+                            <span>COMMAND CENTER</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/dashboard#live-sensors-section">
+                            <span class="nav-dot"></span>
+                            <span>LIVE MONITORING</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/control">
+                            <span class="nav-dot"></span>
+                            <span>DATA SIMULATION</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/fault-analysis">
+                            <span class="nav-dot"></span>
+                            <span>FAULT ANALYSIS</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="/predictive-maintenance">
+                            <span class="nav-dot"></span>
+                            <span>PREDICTIVE MAINTENANCE</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/sensor-health">
+                            <span class="nav-dot"></span>
+                            <span>SENSOR HEALTH</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- SYSTEM STATUS -->
+            <div class="sidebar-status-box">
+                <div class="sidebar-status-header">
+                    <span>SYSTEM</span>
+                    <span style="color: var(--status-normal);">ONLINE</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-led online"></span>
+                    <span>AI ENGINE ONLINE</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-led active" id="data-stream-led"></span>
+                    <span>DATA STREAM READY</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-led online"></span>
+                    <span>MODEL CONNECTED</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN WRAPPER -->
+        <div class="main-wrapper">
+            <!-- TOP HEADER -->
+            <header class="top-header">
+                <div class="header-left">
+                    <div class="header-title-block">
+                        <h2>CONVEYOR AI MONITORING SYSTEM</h2>
+                        <span>PREDICTIVE MAINTENANCE & SIMULATED RUL ADVISORY</span>
+                    </div>
+                    <div class="mode-indicator-pill">
+                        <span class="status-led active"></span>
+                        <span>● DATASET SIMULATION ACTIVE</span>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <div class="rul-badge-tag">SIMULATED RUL – DEMONSTRATION ONLY</div>
+                    <div class="conn-badge">
+                        <span class="status-led online"></span>
+                        <span>WS CONNECTED</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- PAGE CONTENT -->
+            <main class="page-container">
+                <!-- RUL HERO STATUS BANNER (Section 31) -->
+                <section class="overview-grid">
+                    <!-- RUL Card -->
+                    <div class="metric-panel">
+                        <div>
+                            <div class="card-title">
+                                <span class="card-title-icon">⏱️</span>
+                                <span>Remaining Useful Life</span>
+                            </div>
+                            <div class="rul-badge-tag" style="margin-top: 6px;">SIMULATED RUL – DEMONSTRATION ONLY</div>
+                        </div>
+
+                        <div class="circular-gauge-wrap">
+                            <div class="rul-hours-hero" id="maintRulHours">184 HOURS</div>
+                            <div class="rul-sub-formatted" id="maintRulFormatted">7 DAYS 16 HOURS</div>
+                        </div>
+
+                        <div class="panel-footer-stat">
+                            <div class="p-stat-item">
+                                <span class="k">Degradation</span>
+                                <span class="v" id="maintDegradation" style="color: var(--status-normal);">LOW</span>
+                            </div>
+                            <div class="p-stat-item" style="align-items: flex-end;">
+                                <span class="k">Maintenance Status</span>
+                                <span class="v" id="maintAction" style="color: var(--cyan-primary);">MONITOR</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Condition Card -->
+                    <div class="metric-panel">
+                        <div>
+                            <div class="card-title">
+                                <span class="card-title-icon">🩺</span>
+                                <span>Current Machine Condition</span>
+                            </div>
+                            <div class="panel-sub-label">Current XGBoost Classification</div>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px 0;">
+                            <div style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase;">CURRENT CONDITION</div>
+                            <div style="font-family: var(--font-tech); font-size: 2.2rem; font-weight: 800; color: var(--status-normal); text-transform: uppercase; margin-top: 4px;" id="maintCondition">NORMAL LOAD</div>
+                            <div style="font-size: 0.82rem; font-family: var(--font-mono); color: var(--text-secondary); margin-top: 8px;">Confidence: <span id="maintConfidence" style="color: #fff; font-weight: 700;">99.8%</span></div>
+                        </div>
+
+                        <div class="panel-footer-stat">
+                            <div class="p-stat-item">
+                                <span class="k">Operating Hours</span>
+                                <span class="v" id="maintOperatingHours">1,248.5 H</span>
+                            </div>
+                            <div class="p-stat-item" style="align-items: flex-end;">
+                                <span class="k">Model Architecture</span>
+                                <span class="v" style="color: var(--cyan-primary);">XGBoost 4-Class</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notice Card -->
+                    <div class="metric-panel">
+                        <div>
+                            <div class="card-title">
+                                <span class="card-title-icon">ℹ️</span>
+                                <span>RUL Model Architecture</span>
+                            </div>
+                            <div class="panel-sub-label">Model Scope & Roadmap</div>
+                        </div>
+
+                        <div style="margin: 16px 0; font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.6; color: var(--text-secondary);">
+                            <div style="background: rgba(10,15,26,0.8); border: 1px solid var(--border-glass); border-radius: 6px; padding: 12px; margin-bottom: 10px;">
+                                <strong style="color: var(--status-warning);">Notice:</strong>
+                                The current XGBoost model is a <em>classification model</em> for fault and condition detection. It does NOT predict continuous degradation RUL.
+                            </div>
+                            <div style="background: rgba(10,15,26,0.8); border: 1px solid var(--border-glass); border-radius: 6px; padding: 12px;">
+                                <strong style="color: var(--cyan-primary);">Future RUL Integration:</strong>
+                                Architecture is prepared for recurrent neural networks (LSTM / GRU) trained on degradation run-to-failure trajectories.
+                            </div>
+                        </div>
+
+                        <div class="panel-footer-stat">
+                            <div class="p-stat-item">
+                                <span class="k">Active RUL Engine</span>
+                                <span class="v" style="color: var(--status-warning);">DEMONSTRATION</span>
+                            </div>
+                            <div class="p-stat-item" style="align-items: flex-end;">
+                                <span class="k">Target Future Model</span>
+                                <span class="v" style="color: var(--cyan-primary);">LSTM / GRU</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 32: CONDITION-BASED MAINTENANCE PROTOCOL TABLE -->
+                <section class="sensor-matrix-card" style="margin-top: 24px;">
+                    <div class="card-header-bar">
+                        <div>
+                            <div class="card-title">
+                                <span class="card-title-icon">📋</span>
+                                <span>Condition-Based Maintenance Advisory Rules</span>
+                            </div>
+                            <div class="panel-sub-label">Rule-based recommendations mapped to AI condition classifications</div>
+                        </div>
+                        <span class="badge-pill normal">STANDARD OPERATING GUIDELINES</span>
+                    </div>
+
+                    <div class="industrial-table-wrap">
+                        <table class="industrial-table">
+                            <thead>
+                                <tr>
+                                    <th>Detected Condition</th>
+                                    <th>Severity</th>
+                                    <th>Prescribed Maintenance Action</th>
+                                    <th>Inspection Horizon</th>
+                                    <th>Operational Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="maint_row_normal_load">
+                                    <td style="font-weight: 700; color: var(--status-normal);">NORMAL LOAD</td>
+                                    <td><span class="badge-pill normal" style="font-size:0.7rem; padding: 2px 8px;">NORMAL</span></td>
+                                    <td style="font-weight: 600;">MONITOR</td>
+                                    <td style="font-family: var(--font-mono);">Routine Shift Inspection</td>
+                                    <td style="color: var(--text-secondary);">Continue standard material conveying</td>
+                                </tr>
+                                <tr id="maint_row_overload">
+                                    <td style="font-weight: 700; color: var(--status-warning);">OVERLOAD</td>
+                                    <td><span class="badge-pill warning" style="font-size:0.7rem; padding: 2px 8px;">WARNING</span></td>
+                                    <td style="font-weight: 600;">INSPECT LOAD / DRIVE SYSTEM</td>
+                                    <td style="font-family: var(--font-mono);">Next Planned Stoppage (&lt; 24h)</td>
+                                    <td style="color: var(--text-secondary);">Throttle feeder rate; verify drive motor thermal rise</td>
+                                </tr>
+                                <tr id="maint_row_misalignment">
+                                    <td style="font-weight: 700; color: #f97316;">MISALIGNMENT</td>
+                                    <td><span class="badge-pill warning" style="font-size:0.7rem; padding: 2px 8px;">WARNING</span></td>
+                                    <td style="font-weight: 600;">INSPECT BELT ALIGNMENT</td>
+                                    <td style="font-family: var(--font-mono);">Within Current Shift (&lt; 8h)</td>
+                                    <td style="color: var(--text-secondary);">Adjust training idlers; inspect edge clearance</td>
+                                </tr>
+                                <tr id="maint_row_splice_rupture">
+                                    <td style="font-weight: 700; color: var(--status-critical);">SPLICE RUPTURE</td>
+                                    <td><span class="badge-pill critical" style="font-size:0.7rem; padding: 2px 8px;">CRITICAL</span></td>
+                                    <td style="font-weight: 600;">IMMEDIATE INSPECTION</td>
+                                    <td style="font-family: var(--font-mono);">IMMEDIATE (&lt; 1h)</td>
+                                    <td style="color: var(--text-secondary);">Controlled conveyor shutdown; repair vulcanized splice</td>
+                                </tr>
+                                <tr id="maint_row_belt_tear">
+                                    <td style="font-weight: 700; color: var(--status-critical);">BELT TEAR (FUTURE CLASS)</td>
+                                    <td><span class="badge-pill critical" style="font-size:0.7rem; padding: 2px 8px;">CRITICAL</span></td>
+                                    <td style="font-weight: 600;">IMMEDIATE INSPECTION</td>
+                                    <td style="font-family: var(--font-mono);">EMERGENCY STOP</td>
+                                    <td style="color: var(--text-secondary);">Emergency rip switch activation; clamp conveyor flight</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- DEGRADATION CURVE CHART -->
+                <section class="chart-section-card" style="margin-top: 24px;">
+                    <div class="chart-header">
+                        <div>
+                            <div class="card-title">
+                                <span class="card-title-icon">📉</span>
+                                <span>Simulated Joint Degradation & RUL Horizon</span>
+                            </div>
+                            <div class="panel-sub-label">Demonstration wear degradation curve (Prepared for future LSTM/GRU integration)</div>
+                        </div>
+                    </div>
+                    <div class="chart-container-box">
+                        <canvas id="rulDegradationCanvas"></canvas>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/websocket.js"></script>
+    <script src="/js/charts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.conveyorCharts) {
+                window.conveyorCharts.initRulChart('rulDegradationCanvas');
+            }
+
+            if (window.conveyorWS) {
+                window.conveyorWS.onTelemetry((packet) => {
+                    if (!packet || packet.type === 'CONNECTION_ESTABLISHED') return;
+
+                    const rul = packet.rul || {};
+                    const hoursEl = document.getElementById('maintRulHours');
+                    const formEl = document.getElementById('maintRulFormatted');
+                    const degEl = document.getElementById('maintDegradation');
+                    const actEl = document.getElementById('maintAction');
+                    const condEl = document.getElementById('maintCondition');
+                    const confEl = document.getElementById('maintConfidence');
+                    const opHoursEl = document.getElementById('maintOperatingHours');
+
+                    if (hoursEl) hoursEl.textContent = `${Math.round(rul.rul_hours || 184)} HOURS`;
+                    if (formEl) formEl.textContent = rul.rul_formatted || '7 DAYS 16 HOURS';
+                    if (degEl) {
+                        degEl.textContent = rul.degradation || 'LOW';
+                        degEl.style.color = rul.degradation === 'LOW' ? 'var(--status-normal)' : (rul.degradation === 'CRITICAL' ? 'var(--status-critical)' : 'var(--status-warning)');
+                    }
+                    if (actEl) actEl.textContent = rul.maintenance_action || 'MONITOR';
+
+                    if (condEl) {
+                        condEl.textContent = packet.prediction_display_name || packet.prediction.toUpperCase();
+                        condEl.style.color = packet.status === 'NORMAL' ? 'var(--status-normal)' : (packet.status === 'WARNING' ? 'var(--status-warning)' : 'var(--status-critical)');
+                    }
+                    if (confEl) confEl.textContent = `${packet.confidence}%`;
+                    if (opHoursEl) opHoursEl.textContent = `${packet.operating_hours.toLocaleString()} H`;
+
+                    // Highlight active row in advisory table
+                    const norm = (packet.prediction || '').toLowerCase().replace(/\s+/g, '_');
+                    document.querySelectorAll('tbody tr').forEach(tr => tr.style.background = 'transparent');
+                    const activeRow = document.getElementById(`maint_row_${norm}`);
+                    if (activeRow) {
+                        activeRow.style.background = 'rgba(0, 242, 254, 0.08)';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

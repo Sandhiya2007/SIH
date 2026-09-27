@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Simulation & Stream Control | Conveyor Belt AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Rajdhani:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div>
+                <div class="brand-section">
+                    <div class="brand-icon">🎛️</div>
+                    <div class="brand-text">
+                        <h1>CONVEYOR AI</h1>
+                        <p>INDUSTRIAL INTELLIGENCE</p>
+                    </div>
+                </div>
+
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="/dashboard">
+                            <span class="nav-dot"></span>
+                            <span>COMMAND CENTER</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/dashboard#live-sensors-section">
+                            <span class="nav-dot"></span>
+                            <span>LIVE MONITORING</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="/control">
+                            <span class="nav-dot"></span>
+                            <span>DATA SIMULATION</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/fault-analysis">
+                            <span class="nav-dot"></span>
+                            <span>FAULT ANALYSIS</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/predictive-maintenance">
+                            <span class="nav-dot"></span>
+                            <span>PREDICTIVE MAINTENANCE</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/sensor-health">
+                            <span class="nav-dot"></span>
+                            <span>SENSOR HEALTH</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- SYSTEM STATUS (Section 6) -->
+            <div class="sidebar-status-box">
+                <div class="sidebar-status-header">
+                    <span>SYSTEM</span>
+                    <span style="color: var(--status-normal);">ONLINE</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-led online"></span>
+                    <span>AI ENGINE ONLINE</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-led active" id="data-stream-led"></span>
+                    <span>DATA STREAM READY</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-led online"></span>
+                    <span>MODEL CONNECTED</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN WRAPPER -->
+        <div class="main-wrapper">
+            <!-- TOP HEADER -->
+            <header class="top-header">
+                <div class="header-left">
+                    <div class="header-title-block">
+                        <h2>CONVEYOR AI MONITORING SYSTEM</h2>
+                        <span>DATA SIMULATION & INJECTION CONTROL STATION</span>
+                    </div>
+                    <div class="mode-indicator-pill">
+                        <span class="status-led active"></span>
+                        <span>● DATASET SIMULATION ACTIVE</span>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <div class="header-stat">
+                        <span class="label">Testing Dataset</span>
+                        <span class="val" id="datasetFileName" style="color: var(--cyan-primary);">synthetic_motor_fault_dataset.csv</span>
+                    </div>
+                    <div class="header-stat">
+                        <span class="label">Total Samples</span>
+                        <span class="val" id="datasetTotalRows">2000 SAMPLES</span>
+                    </div>
+                    <div class="header-stat">
+                        <span class="label">Conditions</span>
+                        <span class="val" id="datasetConditionsCount" style="color: var(--status-normal);">4 CLASSES</span>
+                    </div>
+                    <div class="conn-badge">
+                        <span class="status-led online"></span>
+                        <span>WS CONNECTED</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- PAGE CONTENT -->
+            <main class="page-container">
+                <!-- TWO-LAPTOP WORKFLOW BANNER (Section 26) -->
+                <section class="line-status-banner">
+                    <div class="banner-left">
+                        <h3>TWO-LAPTOP DEMONSTRATION WORKFLOW</h3>
+                        <p>Laptop 1 displays <strong>Live Monitoring</strong> (<code id="laptop1Url">/dashboard</code>). Laptop 2 controls <strong>Data Simulation</strong> (<code id="laptop2Url">/control</code>). When Laptop 2 starts or steps through rows, Laptop 1 updates synchronously via WebSocket.</p>
+                    </div>
+                    <div class="banner-right">
+                        <span class="badge-pill normal" style="font-size: 0.8rem; padding: 6px 14px;">WEBSOCKET SYNCED</span>
+                    </div>
+                </section>
+
+                <!-- RUNNING ACCURACY STRIP (Section 24) -->
+                <section class="stats-summary-strip" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 22px;">
+                    <div class="summary-metric-card" style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 18px;">
+                        <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase;">Total Predictions</span>
+                        <h3 id="statTotalPredictions" style="font-family: var(--font-tech); font-size: 2rem; color: #fff; margin-top: 4px;">0</h3>
+                    </div>
+                    <div class="summary-metric-card" style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 18px;">
+                        <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase;">Correct Predictions</span>
+                        <h3 id="statCorrectPredictions" style="font-family: var(--font-tech); font-size: 2rem; color: var(--status-normal); margin-top: 4px;">0</h3>
+                    </div>
+                    <div class="summary-metric-card" style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 18px;">
+                        <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase;">Incorrect Predictions</span>
+                        <h3 id="statIncorrectPredictions" style="font-family: var(--font-tech); font-size: 2rem; color: var(--status-critical); margin-top: 4px;">0</h3>
+                    </div>
+                    <div class="summary-metric-card" style="background: var(--bg-card); border: 1px solid var(--border-medium); border-radius: 10px; padding: 18px; box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);">
+                        <span style="font-size: 0.72rem; color: var(--cyan-primary); font-family: var(--font-mono); text-transform: uppercase; font-weight: 700;">Running Accuracy</span>
+                        <h3 id="statRunningAccuracy" style="font-family: var(--font-tech); font-size: 2rem; color: var(--cyan-primary); margin-top: 4px;">100.0%</h3>
+                    </div>
+                </section>
+
+                <!-- CONTROL PANELS GRID -->
+                <section class="control-grid">
+                    <!-- LEFT PANEL: STREAMING CONTROLS (Section 22, 23, 25) -->
+                    <div class="control-panel-card">
+                        <div class="card-header-bar">
+                            <div class="card-title">
+                                <span class="card-title-icon">⚡</span>
+                                <span>Dataset Streaming Controller</span>
+                            </div>
+                            <span class="badge-pill normal" id="streamEngineStatusTag">READY</span>
+                        </div>
+
+                        <!-- Dataset Metadata Summary -->
+                        <div class="dataset-meta-box">
+                            <div class="meta-row">
+                                <span>DATASET:</span>
+                                <span class="val" id="metaDatasetName">synthetic_motor_fault_dataset.csv</span>
+                            </div>
+                            <div class="meta-row">
+                                <span>TOTAL ROWS:</span>
+                                <span class="val" id="metaTotalRows">2,000 Rows</span>
+                            </div>
+                            <div class="meta-row">
+                                <span>TOTAL CONDITIONS:</span>
+                                <span class="val" id="metaTotalConditions">4 Classes (500 each)</span>
+                            </div>
+                            <div class="meta-row">
+                                <span>TARGET COLUMN:</span>
+                                <span class="val" style="color: var(--status-normal);">Belt_Condition (Stripped before prediction)</span>
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar & Current Row (Section 25) -->
+                        <div style="margin-bottom: 24px;">
+                            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
+                                <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase;">Streaming Progress</span>
+                                <span style="font-family: var(--font-tech); font-size: 1.35rem; font-weight: 800; color: var(--cyan-primary);" id="currentRowDisplay">ROW 1 / 2000 (0.05%)</span>
+                            </div>
+                            <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden;">
+                                <div id="streamProgressBar" style="width: 0.05%; height: 100%; background: linear-gradient(90deg, var(--cyan-primary), #00ff9d); transition: width 0.3s ease;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Streaming Control Buttons: START, PAUSE, STOP, RESET (Section 22, 25) -->
+                        <div class="control-buttons-row" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px;">
+                            <button class="btn-industrial btn-start" id="btnStartStream">▶ START</button>
+                            <button class="btn-industrial btn-pause" id="btnPauseStream">⏸ PAUSE</button>
+                            <button class="btn-industrial btn-stop" id="btnStopStream">⏹ STOP</button>
+                            <button class="btn-industrial" id="btnResetStream" style="background: rgba(148, 163, 184, 0.15); border-color: rgba(148, 163, 184, 0.4); color: #fff;">↺ RESET</button>
+                        </div>
+
+                        <!-- Form Range & Speed Configuration (Section 22) -->
+                        <div class="form-group-row">
+                            <div class="input-block">
+                                <label for="startRowInput">Start Row</label>
+                                <input type="number" id="startRowInput" value="1" min="1" max="2000">
+                            </div>
+                            <div class="input-block">
+                                <label for="endRowInput">End Row</label>
+                                <input type="number" id="endRowInput" value="2000" min="1" max="2000">
+                            </div>
+                        </div>
+
+                        <div class="input-block" style="margin-bottom: 24px;">
+                            <label for="streamSpeedSelect">Stream Speed Interval</label>
+                            <select id="streamSpeedSelect">
+                                <option value="1.0">1 Second (Fast Stream)</option>
+                                <option value="2.0" selected>2 Seconds (Standard Demo)</option>
+                                <option value="5.0">5 Seconds (Inspection Mode)</option>
+                                <option value="10.0">10 Seconds (Detailed Analysis)</option>
+                            </select>
+                        </div>
+
+                        <!-- Single Row Injection Control -->
+                        <div style="border-top: 1px solid var(--border-glass); padding-top: 20px;">
+                            <label style="display: block; font-size: 0.72rem; letter-spacing: 1px; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase; margin-bottom: 12px;">Manual Row Injection (1 to 2000)</label>
+                            <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px;">
+                                <input type="number" id="rowInputNumber" value="1" min="1" max="2000" style="width: 110px; background: rgba(10,15,26,0.9); border: 1px solid var(--border-medium); border-radius: 8px; color: #fff; font-family: var(--font-mono); padding: 10px 14px;">
+                                <button class="btn-industrial btn-inject" id="btnInjectRow" style="flex: 1;">⚡ Inject Selected Row</button>
+                            </div>
+                            <input type="range" id="rowSlider" min="1" max="2000" value="1" style="width: 100%; accent-color: var(--cyan-primary);">
+                        </div>
+                    </div>
+
+                    <!-- RIGHT PANEL: GROUND TRUTH VS AI PREDICTION COMPARISON (Section 23, 24) -->
+                    <div class="control-panel-card">
+                        <div class="card-header-bar">
+                            <div class="card-title">
+                                <span class="card-title-icon">⚖️</span>
+                                <span>Actual vs Predicted Validation</span>
+                            </div>
+                            <span class="badge-pill normal">REAL-TIME VALIDATION</span>
+                        </div>
+
+                        <div class="comparison-hero-card">
+                            <div class="compare-row-indicator">
+                                <span id="compareRowNumber">ROW 1</span>
+                                <span style="font-size: 0.8rem; color: var(--text-muted);" id="compareOperatingHours">OPERATING HOURS: 1,248.5 H</span>
+                            </div>
+
+                            <div class="compare-grid">
+                                <div class="compare-cell">
+                                    <div class="label">ACTUAL CONDITION (GROUND TRUTH)</div>
+                                    <div class="value" id="compareActualLabel" style="color: #38bdf8;">NORMAL LOAD</div>
+                                </div>
+                                <div class="compare-cell">
+                                    <div class="label">AI PREDICTED CONDITION</div>
+                                    <div class="value" id="compareAiPrediction" style="color: var(--status-normal);">NORMAL LOAD</div>
+                                </div>
+                            </div>
+
+                            <div class="compare-cell" style="margin-bottom: 20px;">
+                                <div class="label">XGBOOST INFERENCE CONFIDENCE</div>
+                                <div class="value" id="compareConfidence" style="color: var(--cyan-primary);">99.8%</div>
+                            </div>
+
+                            <!-- MATCH / MISMATCH BANNER -->
+                            <div class="match-result-banner match" id="compareMatchBanner">
+                                <span>✓</span> RESULT: CORRECT
+                            </div>
+                        </div>
+
+                        <!-- ARCHITECTURAL INTEGRITY NOTE -->
+                        <div style="margin-top: 24px; padding: 16px; background: rgba(16, 24, 40, 0.6); border: 1px solid var(--border-subtle); border-radius: 8px; font-size: 0.76rem; color: var(--text-secondary); line-height: 1.6;">
+                            <strong style="color: var(--cyan-primary);">ML Data Integrity Protocol:</strong>
+                            Ground truth <code style="color: #fff;">Belt_Condition</code> and identifier <code style="color: #fff;">ID</code> are stripped before model prediction. The 17 model features are strictly validated in training order. Accuracy is computed in real time from verified inference outcomes.
+                        </div>
+                    </div>
+                </section>
+
+                <!-- RECENT INJECTED ROWS TABLE -->
+                <section class="sensor-matrix-card" style="margin-top: 24px;">
+                    <div class="card-header-bar">
+                        <div class="card-title">
+                            <span class="card-title-icon">📋</span>
+                            <span>Streamed Dataset Rows History</span>
+                        </div>
+                        <span class="badge-pill normal">LIVE REPLAY</span>
+                    </div>
+
+                    <div class="industrial-table-wrap">
+                        <table class="industrial-table">
+                            <thead>
+                                <tr>
+                                    <th>Row</th>
+                                    <th>Operating Hours</th>
+                                    <th>Actual Condition</th>
+                                    <th>AI Predicted Condition</th>
+                                    <th>AI Confidence</th>
+                                    <th>Result</th>
+                                </tr>
+                            </thead>
+                            <tbody id="injectedRowsTableBody">
+                                <!-- Populated dynamically by control.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/websocket.js"></script>
+    <script src="/js/control.js"></script>
+</body>
+</html>
